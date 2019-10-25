@@ -1,29 +1,27 @@
-#ifndef __EE231_List_h__
-#define __EE231_List_h__
-
-#include <cstddef>
-
+#include <iostream>
+#include <string>
+#include <initializer_list>
 template<typename T>
 class List
 {
 	private:
-
-	typedef struct llist {
-		T val;
+	typedef struct llist 
+	{
+		T value;
 		struct llist *next;
+		struct llist *prev;
 	} llist;
 
-	llist *_data;
 	size_t _size;
-
-	// private recursive copy so elements
-	// end up in the same order.
+	llist *_front;
+	llist *_back;
+	
 	void reccopy(const llist *ptr)
 	{
-		if (ptr)
+		if(ptr)
 		{
 			reccopy(ptr->next);
-			push_front(ptr->val);
+			push_front(ptr->value);
 		}
 	}
 
@@ -32,77 +30,199 @@ class List
 	// default constructor
 	List()
 	{
-		_data = 0;
+
 		_size = 0;
+		_front = 0;
+		_back = 0;
 	}
 
 	// copy constructor
-	List(const List& other)
+	List(const List<T>& a)
 	{
-		_data = 0;
-		_size = 0;
-		reccopy(other._data);
+		clear();
+		reccopy(a._front);
 	}
 
-	// destructor
+	List(std::initializer_list<T>& a)
+	{
+		_size = 0;
+		_front = 0;
+		_back = 0;
+		for(auto value : a)
+		{
+			push_front(value);
+		}
+	}
+	// destructor	
 	~List()
 	{
 		clear();
 	}
-
-	// copy operator
-	List& operator=(const List& other)
+	
+	// operator =
+	List& operator=(const List& a)
 	{
 		clear();
-		reccopy(other._data);
+		reccopy(a._front);
 		return *this;
 	}
-
-	void clear()
-	{
-		while(!empty())
-			pop_front();
-	}
-
+	
+	// front
 	T& front()
 	{
-		return _data->val;
+		return _front->value;
 	}
 
 	const T& front() const
 	{
-		return _data->val;
+		return _front->value;
 	}
 
-	void push_front(const T& val)
+	// back
+	T& back()
 	{
-		llist *newItem = new llist;
-		newItem->val = val;
-		newItem->next = _data;
-		_data = newItem;
-		_size++;
+		return _back->value;
 	}
-
-	void pop_front()
+	const T& back() const
 	{
-		llist *front = _data;
-		if (front)
-		{
-			_data = front->next;
-			delete front;
-			_size--;
-		}
+		return _back->value;
 	}
 
-	bool empty() const
-	{
-		return _data == 0;
-	}
-
-	size_t size() const
+	// size
+	size_t size()
 	{
 		return _size;
 	}
-};
 
-#endif // __EE231_List_h__
+
+	// push_back
+	void push_back(const T& value)
+	{
+		llist *ptr = new llist;
+		ptr->value = value;
+		ptr->next = NULL;
+		ptr->prev = _back;
+		if(_back != NULL)
+		{
+			_back->next = ptr;
+		}
+		if(_front == 0)
+		{
+			_front = ptr;
+		}
+		_back = ptr;
+		_size++;
+
+	}
+
+	// push_front
+	void push_front(const T& value)
+	{
+		llist *ptr = new llist;
+		ptr->value = value;
+		ptr->prev = NULL;
+		ptr->next = _front;	
+		_front = ptr;
+		if(_back == NULL)
+		{
+			_back = ptr;
+		}
+		else
+		{
+			ptr->next->prev = ptr;
+		}
+		_front = ptr;
+		_size++;
+	}
+	
+	// pop_front
+	void pop_front()
+	{
+		llist *saveptr = _front;
+		_front = _front->next;
+		if(_front)
+			_front->prev = _front->prev->prev;
+		else
+			_back = 0;
+		delete saveptr;
+		_size--;		
+	}
+
+	// pop_back
+	void pop_back()
+	{
+		llist *saveptr = _back;
+		_back = _back->prev;
+		if(_back)
+			_back->next = _back->next->next;
+		else
+			_front = 0;
+		delete saveptr;
+		_size--;	
+	}
+
+	// empty
+	bool empty() const
+	{
+		return (_front == 0)&&(_back == 0);	
+	}
+	void clear()
+	{
+		while(!empty())
+		{
+			pop_front();
+		}
+	}
+
+	// reverse
+	void reverse()
+	{
+		for (llist *z = _front; z != 0; z = z -> prev)
+		{
+			llist *temp = z->next;
+			z->next = z->prev;
+			z->prev = temp;
+		}
+		
+		llist *save;
+		save = _back;
+		_back = _front;
+		_front = save;
+	}
+
+	// unique
+	void unique()
+	{
+		for (llist *ptr = _front; ptr != 0; ptr = ptr->next)
+		{
+			while (ptr->next != 0 && ptr->value == ptr->next->value)
+			{
+				llist *saveptr = ptr->next;
+				ptr->next = saveptr->next;
+				if (saveptr->next == 0)
+				{
+					saveptr->next->prev = ptr;
+				}
+				else 
+				{
+					_back = ptr;
+				}
+				delete saveptr;
+				_size--;
+			}
+		}
+	}
+
+	// print
+	void print() 
+	{
+		llist *temp = _front;
+		while (temp != 0)
+		{
+			std::cout << temp->str << " ";
+			temp = temp->next;
+		}
+		std::cout << std::endl;
+	}
+
+};

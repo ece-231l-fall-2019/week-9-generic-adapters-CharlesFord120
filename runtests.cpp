@@ -5,13 +5,16 @@
 
 #include <string>
 
-#if 0
+#if 1
 #include "List.h"
 typedef List<std::string> StringList;
 typedef List<int> IntList;
 #include "Stack.h"
 typedef Stack<std::string> StringStack;
 typedef Stack<int> IntStack;
+#include "Queue.h"
+typedef Queue<std::string> StringQueue;
+typedef Queue<int> IntQueue;
 #else
 #include <list>
 typedef std::list<std::string> StringList;
@@ -20,7 +23,7 @@ typedef std::list<int> IntList;
 typedef std::stack<std::string> StringStack;
 typedef std::stack<int> IntStack;
 #endif
-
+using namespace std;
 void Assert(bool cond, std::string message)
 {
 	if (cond)
@@ -81,7 +84,26 @@ int main()
 	Assert(ic.top() == 5, "top is 5");
 
 	// TODO: check all methods on IntStack...
+	IntStack is;
+	for(int x = 0; x <= 50; x++)
+	{
+		is.push(x);
+	}
+	Assert(is.top() == 50, "Top is 50");
+	is.pop();
+	Assert(is.top() == 49, "Top is 49");
+	while(is.top() != 0)
+	{	
+		is.pop();
+	}
+	is.pop();
+	Assert(is.empty() == true, "is is empty");
 
+	IntQueue test;
+	test = {5,6,9,21,63};
+	test.pop();
+//	cout << test.front() << endl;
+	Assert(test.front() == 21, "test is true");
 	return 0;
 }
 
