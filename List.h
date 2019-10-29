@@ -89,11 +89,10 @@ class List
 	}
 
 	// size
-	size_t size()
+	size_t size() const
 	{
 		return _size;
 	}
-
 
 	// push_back
 	void push_back(const T& value)
@@ -112,7 +111,6 @@ class List
 		}
 		_back = ptr;
 		_size++;
-
 	}
 
 	// push_front
@@ -166,6 +164,7 @@ class List
 	{
 		return (_front == 0)&&(_back == 0);	
 	}
+
 	void clear()
 	{
 		while(!empty())
@@ -212,7 +211,7 @@ class List
 			}
 		}
 	}
-
+	
 	// print
 	void print() 
 	{
@@ -224,5 +223,42 @@ class List
 		}
 		std::cout << std::endl;
 	}
-
+	template<typename V>
+	friend bool operator==(const List<V>& a, const List<V>& b);
+	template<typename V>
+	friend bool operator!=(const List<V>& a, const List<V>& b);
 };
+
+template<typename T>
+bool operator==(const List<T>& a, const List<T>& b)
+{
+	if(a.size() != b.size())
+		return false;
+
+	auto aptr = a._front;
+	auto bptr = b._front;
+	for( ;aptr != nullptr && bptr != nullptr;
+			aptr=aptr->next, bptr=bptr->next)
+	{
+		if(aptr->value != bptr->value)
+			return false;
+	}
+	return true;
+}
+
+template<typename T>
+bool operator!=(const List<T>& a, const List<T>& b)
+{
+	if(a.size() != b.size())
+		return true;
+
+	auto aptr = a._front;
+	auto bptr = b._front;
+	for( ;aptr != nullptr && bptr != nullptr;
+			aptr=aptr->next, bptr=bptr->next)
+	{
+		if(aptr->value != bptr->value)
+			return true;
+	}
+	return false;
+}

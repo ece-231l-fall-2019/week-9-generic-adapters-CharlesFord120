@@ -34,7 +34,10 @@ void Assert(bool cond, std::string message)
 
 int main()
 {
-	
+	IntList AC;
+	for(int i = 0; i <= 50; i++)
+		AC.push_front(i);
+	cout << "The size of AC is: " << AC.size() << endl;
 	// Testing IntStack
 	IntStack a;
 	IntStack b;
@@ -53,9 +56,28 @@ int main()
 
 	IntStack c;
 	c = a;
+	cout << a.size() << endl;
+	Assert (a == c, "a == c");
 	Assert (a.top() == c.top(), "a.top() == c.top()");
 	// Testing StringStack
+	StringStack d;
+	StringStack e;
 	
+	d.push("A");
+	d.push("B");
+	e.push("A");
+	e.push("B");
+	e.push("C");
+	e.pop();
+	
+	Assert (e == d, "e == d");
+	Assert (e.top() == d.top(), "e.top() == d.top()");
+	Assert (e.top() == "B", "e.top() == B");
+	d.pop();
+	Assert (d.top() == "A", "d.top() == A");
+	d.pop();
+	Assert (d.empty() == true , "d is EMPTY");
+	Assert (e.empty() == false , "e is NOT EMPTY");
 	// Testing IntQueue
 	
 	// Testing StringQueue

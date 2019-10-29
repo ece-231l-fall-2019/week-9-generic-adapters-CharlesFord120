@@ -4,12 +4,15 @@ class Stack
 	protected:
 		List<T> c;
 	public:
+
 		Stack()
 		{
 		}
+		
 		Stack(std::initializer_list<T> a) : c(a)
 		{
 		}
+		
 		T& top()
 		{
 			return c.back();
@@ -45,10 +48,12 @@ class Stack
 			c = a.c;
 			return *this;
 		}
+
 		template<typename TT>
-		friend bool operator==(const Stack<TT>&, const Stack<TT>&);
+		friend bool operator==(const Stack<TT>& a, const Stack<TT>& b);
+
 		template<typename TT>
-		friend bool operator==(const Stack<TT>&, const Stack<TT>&);
+		friend bool operator==(const Stack<TT>& a, const Stack<TT>& b);
 };
 
 template<typename T>
