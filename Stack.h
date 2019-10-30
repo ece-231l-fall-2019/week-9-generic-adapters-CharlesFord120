@@ -53,7 +53,7 @@ class Stack
 		friend bool operator==(const Stack<TT>& a, const Stack<TT>& b);
 
 		template<typename TT>
-		friend bool operator==(const Stack<TT>& a, const Stack<TT>& b);
+		friend bool operator!=(const Stack<TT>& a, const Stack<TT>& b);
 };
 
 template<typename T>

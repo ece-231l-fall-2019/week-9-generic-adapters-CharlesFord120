@@ -26,9 +26,9 @@ class Queue
 		{
 			return c.back();
 		}
-		void push(const T&)
+		void push(const T& a)
 		{
-			c.push_front();
+			c.push_front(a);
 		}
 		void pop()
 		{
@@ -48,9 +48,9 @@ class Queue
 			return *this;
 		}
 		template<typename XX>
-		friend bool operator==(const Queue<T>&, const Queue<T>&);
+		friend bool operator==(const Queue<XX>&, const Queue<XX>&);
 		template<typename XX>
-		friend bool operator!=(const Queue<T>&, const Queue<T>&);
+		friend bool operator!=(const Queue<XX>&, const Queue<XX>&);
 
 };
 template<typename T>

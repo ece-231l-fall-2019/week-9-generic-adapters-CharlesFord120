@@ -43,14 +43,14 @@ class List
 		reccopy(a._front);
 	}
 
-	List(std::initializer_list<T>& a)
+	List(const std::initializer_list<T>& a) 
 	{
+		_front = nullptr;
+		_back = nullptr;
 		_size = 0;
-		_front = 0;
-		_back = 0;
 		for(auto value : a)
 		{
-			push_front(value);
+			push_back(value);
 		}
 	}
 	// destructor	
@@ -225,6 +225,7 @@ class List
 	}
 	template<typename V>
 	friend bool operator==(const List<V>& a, const List<V>& b);
+
 	template<typename V>
 	friend bool operator!=(const List<V>& a, const List<V>& b);
 };
